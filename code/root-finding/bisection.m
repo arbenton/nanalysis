@@ -1,25 +1,24 @@
-f = @(x) cos(x-1);
-a = -5;
-b = 5;
-iterations = 20;
-fa = f(a);
-p = a;
-fp = fa;
+function [p] = bisection(f, a, b, iterations)
 
-for i=1:iterations
+    fa = f(a);
+    p = a;
+    fp = fa;
 
-    % set p to center of the interval
-    p = (a + b) / 2.0;
-    fp = f(p);
+    for i=1:iterations
 
-    % test location of root in the interval
-    if fp*fa > 0
-        a = p;
-        fa = fp;
-    else
-        b = p;
+        % set p to center of the interval
+        p = (a + b) / 2.0;
+        fp = f(p);
+
+        % test location of root in the interval
+        if fp*fa > 0
+            a = p;
+            fa = fp;
+        else
+            b = p;
+        end
+
+        fprintf('Iteration %3.0d: p = %4.9f, f(p) = %4.9f \n', i, p, f(p));
+
     end
-
-    fprintf('Iteration %3.0d: p = %4.9f, f(p) = %4.9f \n', i, p, f(p));
-
 end
