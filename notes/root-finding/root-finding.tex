@@ -1,0 +1,134 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\setlength\parindent{0pt}
+\numberwithin{equation}{subsection}
+\begin{document}
+
+    \section{Root Finding}
+
+        Solutions to the equation $f(x) = 0$ in one dimension.
+
+        \subsection{Bisection Method}
+
+            Given an interval $[a, b]$ containing a root, the interval is
+            interatively halved. The interval contains a root if $f(a)f(b)<0$.\\
+
+            The Bisection method always converges, so long as a root exists
+            on the inteval given. The bisection method converges linearly,
+            making it one of the slower options.
+
+            \begin{center}
+            \begin{algorithm}[H]
+                \caption{The Bisection Method}
+                \begin{algorithmic}[1]
+                    \Procedure{FindRoot}{function $f$, interval $[a, b]$}
+                    \While {$|f(p)| > \epsilon_{mach}$}
+                        \State $p := (a + b) / 2$
+                        \If{$f(p)f(a) > 0$}
+                            \State $a := p$
+                        \Else
+                            \State $b := p$
+                        \EndIf
+                    \EndWhile
+                    \State \Return $p$
+                    \EndProcedure
+                \end{algorithmic}
+            \end{algorithm}
+            \end{center}
+
+        \subsection{Fixed Point Iteration}
+
+            \textit{A fixed point is the solution to $f(p) = p$. One is not guaranteed
+            to exist.}\\
+
+            Given a starting point $p$, a function $g(x) = x - f(x)$ is
+            constructed, and its series is iterated.
+            $$x_{i} = g(x_{i-1})$$
+            The solution for $p$ exists where the solution converges. Fixed
+            Point Iteration converges if $g$ is continuous on its range, and
+            its range contains a fixed point.
+
+            \begin{center}
+            \begin{algorithm}[H]
+                \caption{Fixed Point Iteration}
+                \begin{algorithmic}[1]
+                    \Procedure{FindRoot}{function $f$, guess $p$}
+                    \While {$|f(p) - p| > \epsilon_{mach}$}
+                        \State $p \gets f(p)$
+                    \EndWhile
+                    \State \Return $p$
+                    \EndProcedure
+                \end{algorithmic}
+            \end{algorithm}
+            \end{center}
+
+        \subsection{Newton's Method}
+
+            Given a starting point $p$, and the function $f'$, its series is
+            iterated.
+            $$x_{i} = x_{i-1} - \frac{f(x_{i-1})}{f'(x_{i-1})}$$
+            Fixed Point iteration is then applied. Newton's Method converges
+            quadratically, but requires the derivative
+            of the function and the initial guess to be close to the root.
+
+            \begin{center}
+            \begin{algorithm}[H]
+                \caption{Newton's Method}
+                \begin{algorithmic}[1]
+                    \Procedure{FindRoot}{function $f$, derivative $f'$, guess $p$}
+                    \While {$|f(p) - p| > \epsilon_{mach}$}
+                        \State $p \gets p - f(p)/f'(p)$
+                    \EndWhile
+                    \State \Return $p$
+                    \EndProcedure
+                \end{algorithmic}
+            \end{algorithm}
+            \end{center}
+
+        \subsection{Aitken's $\Delta^2$ Method}
+
+            \textit{The $\Delta^k$ represents the $k$-order finite-derivative and is
+            defined such that $\Delta p_n = p_{n+1} - p_{n}$ and
+            $\Delta^k p_n = \Delta (\Delta^{k-1} p_n)$.}\\
+
+            Using the first- and second-order finite-derivates, a series can be
+            constructed.
+            $$\hat{x}_n = x_n - \frac{(\Delta x_n)^2}{\Delta^2 x_n}$$
+            This series can then be applied with fixed point iteration.
+            Aitken's $\Delta^2$ Method generally converges much faster than the original
+            series.
+
+        \subsection{Horner's Method}
+
+            Given that function $P$ is a polynomial with $n$ real roots,
+            and polynomial $Q$ with no real roots, function $P$ can be
+            factorized by $Q$.
+            $$P(x) = Q(x) \prod_{i=0}^{n} (x - x_i) + a_0$$
+
+            Horner's Method is rapid for polynomials and can find all zeros
+            through recursion. Programmatically, the polynomial is represented
+            as a coefficient array.
+
+            \begin{center}
+            \begin{algorithm}[H]
+                \caption{Horners Method}
+                \begin{algorithmic}[1]
+                    \Procedure{FindRoot}{coefficents $a$, point $x$}
+                    \State $y := a_i$
+                    \State $n := ||a|| $
+                    \For {$j \in \mathbb{Z}[n-1, 1]$}
+                        \State $y \gets xy + a_j$
+                    \EndFor
+                    \State $y \gets xy + a_{0}$
+                    \State \Return $p$
+                    \EndProcedure
+                \end{algorithmic}
+            \end{algorithm}
+            \end{center}
+
+\end{document}
