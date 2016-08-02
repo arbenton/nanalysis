@@ -1,4 +1,4 @@
-function [P] = divided_differences(x, y, p)
+function [P, v] = divided_differences(x, y, p)
 
     n = length(x);
     D = zeros(n,n);
@@ -8,9 +8,13 @@ function [P] = divided_differences(x, y, p)
             D(k,j) = (D(k,j-1)-D(k-1,j-1))/(x(k)-x(k-j+1));
         end
     end
-    P = 0;
-    for i=1:n
-        P = P + D(i, i)*prod(p*ones(1, i) - x(1:i));
-    end
 
+    P = diag(D);
+
+    if exist('p', 'var')
+        v = P(1);
+        for i=1:n-1
+            v = v + P(i+1)*prod(p*ones(1,i)-x(1:i));
+        end
+    end
 end
