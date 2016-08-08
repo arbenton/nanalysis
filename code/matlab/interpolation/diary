@@ -1,0 +1,117 @@
+octave:19> f = @(x) 3.*x.*exp(x) - exp(2.*x);
+octave:20> x = [1.00 1.05];
+octave:21> y = f(x);
+octave:22> type hermite
+hermite is the user-defined function defined from: /home/andrew/Documents/school/numerical_analysis/code/interpolation/hermite.m
+
+function [P, v] = hermite(x, y, yp, p)
+
+    n = length(x);
+    z = zeros(2*n,1);
+    Q = zeros(2*n,2*n);
+
+    for i=1:n
+        z(2*i-1) = x(i);
+        z(2*i) = x(i);
+        Q(2*i-1,1) = y(i);
+        Q(2*i,1) = y(i);
+        Q(2*i,2) = yp(i);
+        if i~=1
+            Q(2*i-1,2) = (Q(2*i-1,1)-Q(2*i-2,1)) / (z(2*i-1)-z(2*i-2));
+        end
+    end
+    
+    for i=2:2*n-1
+       for j=2:i
+            Q(i+1,j+1) = (Q(i+1,j)-Q(i,j))/(z(i+1)-z(i-j+1));
+        end
+    end
+
+    P = diag(Q);
+
+    if exist('p', 'var')
+        v = P(1);
+        for i=1:2*n-1
+            v = v + P(i+1)*prod(p*ones(i,1)-z(1:i));
+        end
+    end
+end
+
+octave:23> fp = @(x) 3.*exp(x) + 3.*x.*exp(x) - 2.*exp(2.*x);
+octave:24> yp = fp(x);
+octave:25> [P, v] = hermite(x, y, yp, 1.03)
+P =
+
+   0.76579
+   1.53158
+  -2.77489
+  -4.75024
+
+v =  0.80932
+octave:26> x = [1.00 1.05 1.07];
+octave:27> y = f(x);
+octave:28> yp = fp(x);
+octave:29> [P, v] = hermite(x, y, yp, 1.03)
+P =
+
+   0.76579
+   1.53158
+  -2.77489
+  -4.75024
+  -3.50430
+  -1.70781
+
+v =  0.80932
+octave:30> % 3.4.9
+octave:30> x = [0 3 5 8 13];
+octave:31> y = [0 225 383 623 993];
+octave:32> yp = [75 77 80 74 72];
+octave:34> [P, v] = hermite(x, y, yp, 1.00)
+P =
+
+    0.00000
+   75.00000
+    0.00000
+    0.22222
+   -0.03111
+   -0.00644
+    0.00226
+   -0.00091
+    0.00013
+   -0.00002
+
+v =  76.259
+
+octave:3> x = [0 3 5 8 13];
+octave:4> y = [0 225 383 623 993];
+octave:5> yp = [75 77 80 74 72];
+octave:9> syms p
+octave:10> [P, v] = hermite(x, y, yp, p)
+P =
+
+    0.00000
+   75.00000
+    0.00000
+    0.22222
+   -0.03111
+   -0.00644
+    0.00226
+   -0.00091
+    0.00013
+   -0.00002
+
+v = (sym)
+
+        2                 2        2        2       2        2        2        2       2                2        2       2        2        2       2                2      2        2      2               
+    10⋅p ⋅(p - 13)⋅(p - 8) ⋅(p - 5) ⋅(p - 3)    19⋅p ⋅(p - 8) ⋅(p - 5) ⋅(p - 3)    35⋅p ⋅(p - 8)⋅(p - 5) ⋅(p - 3)    39⋅p ⋅(p - 5) ⋅(p - 3)    29⋅p ⋅(p - 5)⋅(p - 3)    7⋅p ⋅(p - 3)    2⋅p ⋅(p - 3)       
+  - ───────────────────────────────────────── + ──────────────────────────────── - ─────────────────────────────── + ─────────────────────── - ────────────────────── - ───────────── + ──────────── + 75⋅p
+                      494471                                 145564                             38327                         17227                     4500                 225             9             
+
+octave:14> vd = diff(v);
+ctave:21> solve(vd == 80.6667, p)
+ans = {}(0x0)
+octave:22> solve(vd == 80.00, p)
+ans = (sym) 5
+octave:23> solve(vd == 81.00, p)
+ans = {}(0x0)
+octave:36> diary diary.txt

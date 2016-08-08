@@ -1,0 +1,99 @@
+octave:2> x = [2.0 2.1 2.2 2.3]
+x =
+
+   2.0000   2.1000   2.2000   2.3000
+
+octave:3> y = [3.6887983 3.6905701 3.6688192 3.6245909];
+octave:4> ls
+diary.txt  endpoint_diff.m  midpoint_diff.m
+octave:5> type endpoint_diff
+endpoint_diff is the user-defined function defined from: /home/andrew/Documents/school/numerical_analysis/code/calculus/endpoint_diff.m
+
+function [v] = endpoint_diff(x, y)
+
+    h = mean(diff(x));
+
+    if length(x) == 3
+        c = [-3 4 -1];
+        d = 2*h;
+    elseif length(x) == 5
+        c = [-25 48 -36 16 -3];
+        d = 12*h;
+    else
+        error('Only 3 and 5 point is supported.')
+    end
+
+    v = (c * y') / d;
+
+end
+
+octave:6> v = endpoint_diff(x(1:3), y(1:3))
+v =  0.13533
+octave:7> v = endpoint_diff(flip(x(2:end)), flip(y(2:end)))
+v = -0.55467
+octave:8> v = midpoint_diff(x(1:3), y(1:3))
+v =  0.099896
+octave:9> v = endpoint_diff(x(2:end), y(2:end))
+v = -0.10512
+octave:10> v = midpoint_diff(x(2:4), y(2:4))
+v =  0.32990
+octave:11> x = [.2 .4 .6 .8 1.0];
+octave:12> h = .2
+h =  0.20000
+octave:13> y = [.9798652 .9177710 .8080348 .6386093 .3843735];
+octave:14> c = [-25 48 -36 16 -3];
+octave:15> c * y(1:5)'
+ans = -0.46825
+octave:16> c * y(1:5)' / (12*h)
+ans = -0.19510
+octave:17> c * y(2:6)' / (12*h)
+error: A(I): index out of bounds; value 6 out of bound 5
+octave:17> c * flip(y(1:5))' / (12*h)
+ans =  1.5414
+octave:18> c = [1 -8 0 8 -1];
+octave:19> c * y' / (12*h)
+ans = -0.68242
+octave:20> f = @(x) exp(x);
+octave:21> fp = @(n) (exp(x + 10.^(-n)) - exp(x))/(10^(-n));
+octave:22> n = 1:20;
+octave:23> x = 1.25;
+octave:24> fp(n)
+error: operator +: nonconformant arguments (op1 is 1x5, op2 is 1x20)
+error: called from
+     at line -1 column -1
+error: evaluating argument list element number 1
+error: called from
+     at line -1 column -1
+octave:24> fp = @(n) (exp(x .+ 10.^(-n)) - exp(x))/(10^(-n));
+octave:25> fp(n)
+error: for x^A, A must be a square matrix. Use .^ for elementwise power.
+error: called from
+     at line -1 column -1
+octave:25> fp = @(n) (exp(x .+ 10.^(-n)) - exp(x))/(10.^(-n));
+octave:26> fp(n)
+ans =  3.6692
+octave:27> n = 1:20
+n =
+
+    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16   17   18   19   20
+
+octave:28> fp(n)
+ans =  3.6692
+octave:29> fp(1)
+ans =  3.6708
+octave:30> fp(20)
+ans = 0
+octave:31> fp(19)
+ans = 0
+octave:32> fp(16)
+ans = 0
+octave:33> fp(13)
+ans =  3.4861
+octave:34> fp(14)
+ans =  3.4639
+octave:35> fp(15)
+ans =  3.9968
+octave:36> fp(16)
+ans = 0
+octave:37> 
+

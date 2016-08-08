@@ -21,7 +21,7 @@ function [P, v] = hermite(x, y, yp, p)
         end
     end
 
-    P = diag(Q)
+    P = diag(Q);
 
     if exist('p', 'var')
         v = P(1);
