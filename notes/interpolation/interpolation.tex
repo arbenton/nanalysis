@@ -1,13 +1,34 @@
-\documentclass[12pt]{article}
+\documentclass[10pt]{article}
 \usepackage[margin=1in]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
-\usepackage{algorithm}
-\usepackage[noend]{algpseudocode}
+\usepackage{listings}
+\usepackage{color}
+\definecolor{mygreen}{RGB}{28,172,0} % color values Red, Green, Blue
+\definecolor{mylilas}{RGB}{170,55,241}
 \setlength\parindent{0pt}
 \numberwithin{equation}{subsection}
+
+\lstset{language=Matlab,%
+    %basicstyle=\color{red},
+    breaklines=true,%
+    morekeywords={matlab2tikz},
+    keywordstyle=\color{blue},%
+    morekeywords=[2]{1}, keywordstyle=[2]{\color{black}},
+    identifierstyle=\color{black},%
+    stringstyle=\color{mylilas},
+    commentstyle=\color{mygreen},%
+    showstringspaces=false,%without this there will be a symbol in the places where there is a space
+    numbers=left,%
+    numberstyle={\tiny \color{black}},% size of the numbers
+    numbersep=9pt, % this defines how far the numbers are from the text
+    emph=[1]{for,end,break},emphstyle=[1]\color{red}, %some words to emphasise
+    %emph=[2]{word1,word2}, emphstyle=[2]{style},
+}
+
 \begin{document}
+
 
     \section{Interpolation and Polynomial Approximation}
 
@@ -20,29 +41,9 @@
             $$P(x) = \sum_{k=0}^n \Big[ f(x_k) \prod _{i=0, i\neq k}^n \frac{x - x_{i}}{x_{k} - x_{i}} \Big]$$
 
             Lagrange Polynomials are effective for the general case, but prone
-            to round-off error.
+            to round-off error.\\
 
-            \begin{center}
-            \begin{algorithm}[H]
-                \caption{Lagrange Interpolation}
-                \begin{algorithmic}[1]
-                    \Procedure{Interpolate}{points $(x, f(x))$, point $p$}
-                    \State $v \gets 0$
-                    \State $n \gets ||x||$
-                    \For {$k \in \mathbb{Z}[1, n]$}
-                        \State $L \gets 1$
-                        \For {$j \in \mathbb{Z}[1, n]$}
-                            \If {$j \neq k$}
-                                \State $L \gets L * (p - x_j) / (x_k - x_j)$
-                            \EndIf
-                        \EndFor
-                        \State $v \gets v + L * f(x_k)$
-                    \EndFor
-                    \State \Return $v$
-                    \EndProcedure
-                \end{algorithmic}
-            \end{algorithm}
-            \end{center}
+            \lstinputlisting{../../code/matlab/interpolation/lagrange.m}
 
         \subsection{Neville's Method}
 
@@ -50,29 +51,9 @@
             $f$, an interpolating polynomial can be recursively constructed.
             $$Q_{i,j} = \frac{(x - x_{i-j})Q_{i,j-1} - (x - x_i)Q_{i-1,j-1}}{x_i - x_{i-j}}$$
             Neville's Method reduces the computations required for interpolants
-            and therefore reduces the round-off error from lagrange.
+            and therefore reduces the round-off error from lagrange.\\
 
-            \begin{center}
-            \begin{algorithm}[H]
-                \caption{Neville's Method}
-                \begin{algorithmic}[1]
-                    \Procedure{Interpolate}{points $(x, f(x))$, point $p$}
-                    \State $Q \gets \emptyset$
-                    \State $n \gets ||x||$
-                    \For {$i \in \mathbb{Z}[0,n]$}
-                        \State $Q_{i,0} \gets f(x_i)$
-                    \EndFor
-                    \For {$i \in \mathbb{Z}[1, n]$}
-                        \For {$j \in \mathbb{Z}[1, i]$}
-                            \State $Q_{i,j} \gets \big[(p-x_{i-j})Q_{i,j-1}-(p-x_i)Q_{i-1,j-1}\big]/(x_i - x_{i-j}) $
-                        \EndFor
-                    \EndFor
-                    \State \Return $Q_{n,n}$
-                    \EndProcedure
-                \end{algorithmic}
-            \end{algorithm}
-            \end{center}
-
+            \lstinputlisting{../../code/matlab/interpolation/neville.m}
 
         \subsection{Newton Divided Differences}
 
@@ -84,29 +65,9 @@
             $P_n$.
             $$P_n(x) = f[x_0] + \sum_{k=1}^n \Big[ f[x_0,...,x_k] \prod_{i=0}^{k-1} (x - x_i) \Big]$$
             Divided Differences can have additional points given to it without
-            recalculation of the polynomial.
+            recalculation of the polynomial.\\
 
-
-            \begin{center}
-            \begin{algorithm}[H]
-                \caption{Divided Differences Interpolation}
-                \begin{algorithmic}[1]
-                    \Procedure{Interpolate}{points $(x, f(x))$, point $p$}
-                    \State $F \gets \emptyset$
-                    \State $n \gets ||x|| - 1$
-                    \For {$i \in \mathbb{Z}[0,n]$}
-                        \State $F_{i,0} \gets f(x_i)$
-                    \EndFor
-                    \For {$i \in \mathbb{Z}[1, n]$}
-                        \For {$j \in \mathbb{Z}[1, i]$}
-                            \State $F_{i,j} \gets \big[F_{i,j-1}-F_{i-1,j-1}\big]/(x_i - x_{i-j}) $
-                        \EndFor
-                    \EndFor
-                    \State \Return $\{F_{i,i}\}_{i=0}^{n}$
-                    \EndProcedure
-                \end{algorithmic}
-            \end{algorithm}
-            \end{center}
+            \lstinputlisting{../../code/matlab/interpolation/divided_differences.m}
 
         \subsection{Newton Equally Spaced Differences}
 
@@ -127,36 +88,9 @@
             Given a set of points $x$ and the values of their function $f$ and
             its derivative $f'$. Using divided differences and creating virtual
             nodes $z$ to represent the derivative values, the function can be
-            interpolated.
+            interpolated.\\
 
-            \begin{center}
-            \begin{algorithm}[H]
-                \caption{Hermite's Method}
-                \begin{algorithmic}[1]
-                    \Procedure{Interpolate}{points $(x, f(x), f'(x))$, point $p$}
-                    \State $Q \gets \emptyset$
-                    \State $z \gets \emptyset$
-                    \State $n \gets ||x|| - 1$
-                    \For {$i \in \mathbb{Z}[0,n]$}
-                        \State $z_{2i} \gets x_i$
-                        \State $z_{2i+1} \gets x_i$
-                        \State $Q_{2i,0} \gets f(x_i)$
-                        \State $Q_{2i+1,0} \gets f(x_i)$
-                        \State $Q_{2i+1,1} \gets f'(x_i)$
-                        \If {$i \neq 0$}
-                            \State $Q_{2i,1} \gets (Q_{2i,0}-Q_{2i-1,0})/(z_{2i}-z_{2i-1})$
-                        \EndIf
-                    \EndFor
-                    \For {$i \in \mathbb{Z}[2, 2n+1]$}
-                        \For {$j \in \mathbb{Z}[2, i]$}
-                            \State $Q_{i,j} \gets \big[Q_{i,j-1}-Q_{i-1,j-1}\big]/(z_i - z_{i-j}) $
-                        \EndFor
-                    \EndFor
-                    \State \Return $\{Q_{i,i}\}_{i=0}^{2n+1}$
-                    \EndProcedure
-                \end{algorithmic}
-            \end{algorithm}
-            \end{center}
+            \lstinputlisting{../../code/matlab/interpolation/hermite.m}
 
         \subsection{Natural Cubic Splines}
 
@@ -169,42 +103,17 @@
             $$S_j(x) = a_j + b_j(x-x_j) + c_j(x-x_j)^2 + d_j(x-x_j)^3$$
             A natural spline will be linear at its bounds $a, b$. That is,
             $S''(a) = 0$ and $S'(b) = 0$. A system of equations is constructed
-            and solved.
+            and solved.\\
 
-            \begin{center}
-            \begin{algorithm}[H]
-                \caption{Natural Cubic Splines}
-                \begin{algorithmic}[1]
-                    \Procedure{Interpolate}{points $(x, f(x))$}
-                    \State $a = b = c = d = h = \alpha = \mu = l = z \gets \emptyset$
-                    \For {$i \in \mathbb{Z}[0, n]$}
-                        \State $a_i \gets f(x_i)$
-                    \EndFor
-                    \For {$i \in \mathbb{Z}[1,n-1]$}
-                        \State $h_i \gets x_{i+1} - x_i$
-                    \EndFor
-                    \For {$i \in \mathbb{Z}[0, n-1]$}
-                        \State $\alpha_i \gets 3(a_{i+1}-a_i)/h_i- 3(a_i-a_{i-1})/h_{i-1}$
-                    \EndFor
-                    \State $l_0 \gets 1$
-                    \State $\mu_0 = z_0 \gets 0$
-                    \For {$i \in \mathbb{Z}[1, n-1]$}
-                        \State $l_i \gets 2(x_{i+1}-x_{i-1}) - h_{i-1}\mu_{i-1}$
-                        \State $\mu_i \gets h_i/l_i$
-                        \State $z_i \gets (\alpha_i - h_{i-1}z_{i-1})/l_i$
-                    \EndFor
-                    \State $l_n \gets 1$
-                    \State $z_n = c_n \gets 0$
-                    \For {$j \in \mathbb{Z}[n-1,0]$}
-                        \State $c_j \gets z_j - \mu_j c_{j+1}$
-                        \State $b_j \gets (a_{j+1}-a_j)/h_j-h_j(c_{j+1}+2c_j)/3$
-                        \State $d_j \gets (c_{j+1}-c_j)/(3h_j) $
-                    \EndFor
-                    \State \Return $\{Q_{i,i}\}_{i=0}^{2n+1}$
-                    \EndProcedure
-                \end{algorithmic}
-            \end{algorithm}
-            \end{center}
+            \lstinputlisting{../../code/matlab/interpolation/natural_cubic_splines.m}
 
+        \subsection{Clamped Cubic Splines}
+
+            Given a set of points $x$, the values of their function $f$, and
+            the values of their first derivative at the endpoints. A
+            spline $S_j$ is constructed. A spline is constructed with the
+            additional endpoint constraint.
+
+            \lstinputlisting{../../code/matlab/interpolation/clamped_cubic_splines.m}
 
 \end{document}

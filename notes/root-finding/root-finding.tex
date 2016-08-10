@@ -1,10 +1,31 @@
-\documentclass[12pt]{article}
+\documentclass[10pt]{article}
 \usepackage[margin=1in]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
-\usepackage{algorithm}
-\usepackage[noend]{algpseudocode}
+\usepackage{listings}
+\usepackage{color}
+\definecolor{mygreen}{RGB}{28,172,0} % color values Red, Green, Blue
+\definecolor{mylilas}{RGB}{170,55,241}
+\setlength\parindent{0pt}
+\numberwithin{equation}{subsection}
+
+\lstset{language=Matlab,%
+    %basicstyle=\color{red},
+    breaklines=true,%
+    morekeywords={matlab2tikz},
+    keywordstyle=\color{blue},%
+    morekeywords=[2]{1}, keywordstyle=[2]{\color{black}},
+    identifierstyle=\color{black},%
+    stringstyle=\color{mylilas},
+    commentstyle=\color{mygreen},%
+    showstringspaces=false,%without this there will be a symbol in the places where there is a space
+    numbers=left,%
+    numberstyle={\tiny \color{black}},% size of the numbers
+    numbersep=9pt, % this defines how far the numbers are from the text
+    emph=[1]{for,end,break},emphstyle=[1]\color{red}, %some words to emphasise
+    %emph=[2]{word1,word2}, emphstyle=[2]{style},
+}
 \setlength\parindent{0pt}
 \numberwithin{equation}{subsection}
 \begin{document}
@@ -22,24 +43,7 @@
             on the inteval given. The bisection method converges linearly,
             making it one of the slower options.
 
-            \begin{center}
-            \begin{algorithm}[H]
-                \caption{The Bisection Method}
-                \begin{algorithmic}[1]
-                    \Procedure{FindRoot}{function $f$, interval $[a, b]$}
-                    \While {$|f(p)| > \epsilon_{mach}$}
-                        \State $p := (a + b) / 2$
-                        \If{$f(p)f(a) > 0$}
-                            \State $a := p$
-                        \Else
-                            \State $b := p$
-                        \EndIf
-                    \EndWhile
-                    \State \Return $p$
-                    \EndProcedure
-                \end{algorithmic}
-            \end{algorithm}
-            \end{center}
+            \lstinputlisting{../../code/matlab/root-finding/bisection.m}
 
         \subsection{Fixed Point Iteration}
 
@@ -53,19 +57,7 @@
             Point Iteration converges if $g$ is continuous on its range, and
             its range contains a fixed point.
 
-            \begin{center}
-            \begin{algorithm}[H]
-                \caption{Fixed Point Iteration}
-                \begin{algorithmic}[1]
-                    \Procedure{FindRoot}{function $f$, guess $p$}
-                    \While {$|f(p) - p| > \epsilon_{mach}$}
-                        \State $p \gets f(p)$
-                    \EndWhile
-                    \State \Return $p$
-                    \EndProcedure
-                \end{algorithmic}
-            \end{algorithm}
-            \end{center}
+            \lstinputlisting{../../code/matlab/root-finding/fixed_point.m}
 
         \subsection{Newton's Method}
 
@@ -76,19 +68,7 @@
             quadratically, but requires the derivative
             of the function and the initial guess to be close to the root.
 
-            \begin{center}
-            \begin{algorithm}[H]
-                \caption{Newton's Method}
-                \begin{algorithmic}[1]
-                    \Procedure{FindRoot}{function $f$, derivative $f'$, guess $p$}
-                    \While {$|f(p) - p| > \epsilon_{mach}$}
-                        \State $p \gets p - f(p)/f'(p)$
-                    \EndWhile
-                    \State \Return $p$
-                    \EndProcedure
-                \end{algorithmic}
-            \end{algorithm}
-            \end{center}
+            \lstinputlisting{../../code/matlab/root-finding/newton.m}
 
         \subsection{Aitken's $\Delta^2$ Method}
 
@@ -113,22 +93,5 @@
             Horner's Method is rapid for polynomials and can find all zeros
             through recursion. Programmatically, the polynomial is represented
             as a coefficient array.
-
-            \begin{center}
-            \begin{algorithm}[H]
-                \caption{Horners Method}
-                \begin{algorithmic}[1]
-                    \Procedure{FindRoot}{coefficents $a$, point $x$}
-                    \State $y := a_i$
-                    \State $n := ||a|| $
-                    \For {$j \in \mathbb{Z}[n-1, 1]$}
-                        \State $y \gets xy + a_j$
-                    \EndFor
-                    \State $y \gets xy + a_{0}$
-                    \State \Return $p$
-                    \EndProcedure
-                \end{algorithmic}
-            \end{algorithm}
-            \end{center}
 
 \end{document}
