@@ -1,6 +1,6 @@
 function [v] = composite_trapezoidal(f, a, b, n)
     
-    h = (a-b)/n;
+    h = (b - a)/n;
     xi0 = f(a) + f(b);
     xi = 0;
 

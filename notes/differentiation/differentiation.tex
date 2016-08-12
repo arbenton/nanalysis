@@ -1,0 +1,84 @@
+
+\documentclass[10pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{listings}
+\usepackage{color}
+\definecolor{mygreen}{RGB}{28,172,0} % color values Red, Green, Blue
+\definecolor{mylilas}{RGB}{170,55,241}
+\setlength\parindent{0pt}
+\numberwithin{equation}{subsection}
+
+\lstset{language=Matlab,%
+    %basicstyle=\color{red},
+    breaklines=true,%
+    morekeywords={matlab2tikz},
+    keywordstyle=\color{blue},%
+    morekeywords=[2]{1}, keywordstyle=[2]{\color{black}},
+    identifierstyle=\color{black},%
+    stringstyle=\color{mylilas},
+    commentstyle=\color{mygreen},%
+    showstringspaces=false,%without this there will be a symbol in the places where there is a space
+    numbers=left,%
+    numberstyle={\tiny \color{black}},% size of the numbers
+    numbersep=9pt, % this defines how far the numbers are from the text
+    emph=[1]{for,end,break},emphstyle=[1]\color{red}, %some words to emphasise
+    %emph=[2]{word1,word2}, emphstyle=[2]{style},
+}
+
+\begin{document}
+
+
+    \section{Differentiation}
+
+        Algorithms which approximate $f'(p)$ given $f(x)$ and $p$.
+
+        \subsection{Midpoint Formulas}
+
+            Given a function $f(x)$ and point $p$, a the derivative can
+            be found by considering the equally spaced points $p_i = p + i*h$,
+            around $p$. Midpoint formulas consider the points both greater
+            and lesser than point $p$, and can use 3 or 5 points.\\
+
+            For functions with $f^{(3)}(x) = 0$, 3 point formulas are ideal.
+
+            $$
+                f'(x) = \frac{f(p + h) - f(p - h)}{2h} + \mathcal{O}(h^2)
+            $$
+
+            For functions with $f^{(5)}(x) = 0$, 5 point formulas are ideal.
+
+            $$
+                f'(x) = \frac{f(p-2h)-8f(p-h)+8f(p+h)-f(p+2h)}{12h} + \mathcal{O}(h^4)
+            $$
+
+            Midpoint derivatives are prone to round-off error, and therefore
+            have an optimal non-zero stepsize $h$.
+
+            \lstinputlisting{../../code/matlab/differentiation/midpoint_diff.m}
+
+        \subsection{Endpoint Formulas}
+
+            Given a function $f(x)$ and point $p$, a the derivative can
+            be found by considering the equally spaced points $p_i = p + i*h$,
+            around $p$. Endpoint formulas consider the points both greater
+            than point $p$, and can use 3 or 5 points.\\
+
+            For functions with $f^{(3)}(x) = 0$, 3 point formulas are ideal.
+
+            $$
+                f'(x) = \frac{-3f(p)+4f(p+h)-f(p+2h)}{2h} + \mathcal{O}(h^2)
+            $$
+
+            For functions with $f^{(5)}(x) = 0$, 5 point formulas are ideal.
+
+            $$
+                f'(x) = \frac{-25f(p)+48f(p+h)-36f(p+2h)+16f(p+3h)-3f(p+4h)}{12h} + \mathcal{O}(h^4)
+            $$
+
+            Endpoint derivatives are prone to round-off error, and therefore
+            have an optimal non-zero stepsize $h$.
+
+\end{document}

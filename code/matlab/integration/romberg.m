@@ -1,7 +1,7 @@
 function [v] = romberg(f, a, b, n)
 
     h = b-a;
-    R = zeros(n, n);
+    R = zeros(2, n);
     R(1,1) = (h/2)*(f(a) + f(b));
 
     for i=2:n
@@ -16,13 +16,13 @@ function [v] = romberg(f, a, b, n)
         end
         
         h = h/2;
-        
-        for j=2:i
+
+        for j=1:i
             R(1,j) = R(2,j);
         end
 
     end
 
-    v = R(n, n);
+    v = R(2, n);
 
 end
