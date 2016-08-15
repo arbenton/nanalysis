@@ -1,5 +1,18 @@
 function [v] = adaptive_simpsons(f, a, b, tol, n)
 
+    % Adaptive Simpsons Formula for Integration
+    %
+    % Solves int_a^b f(x) dx, exclusive of a and b across n panels.
+    %
+    % Arguments:
+    %   f : function
+    %   a : lower bound
+    %   b : upper bound
+    %   tol : tolerance
+    %   n : number of intervals
+    % Returns:
+    %   v : value of integral
+
     fa = f(a);
     fc = f((a+b)/2);
     fb = f(b);

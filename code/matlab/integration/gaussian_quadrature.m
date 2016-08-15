@@ -1,5 +1,17 @@
 function [v]=gaussian_quadrature(f,a,b,n)
 
+    % Gaussian Quadrature Algorithm for Integration
+    %
+    % Solves int_a^b f(x) dx across n panels.
+    %
+    % Arguments:
+    %   f : function
+    %   a : lower bound
+    %   b : upper bound
+    %   n : number of intervals
+    % Returns:
+    %   v : value of integral
+
     n=n-1;
     n1=n+1; n2=n+2;
     xu=linspace(-1,1,n1)';
