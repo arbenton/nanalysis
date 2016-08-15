@@ -8,7 +8,7 @@
 composite_simpsons is the user-defined function defined from: /home/andrew/Documents/school/numerical-analysis/code/matlab/integration/composite_simpsons.m
 
 function [v] = composite_simpsons(f, a, b, n)
-    
+
     h = (b - a)/n;
     xi0 = f(a) + f(b);
     xi1 = 0;
@@ -48,11 +48,11 @@ function [v] = romberg(f, a, b, n)
             s = s + f(a + (k-.5)*h);
         end
         R(2,1) = 1/2 * (R(1,1) + h*s);
-    
+
         for j=2:i
             R(2,j) = R(2,j-1) + (R(2,j-1)-R(1,j-1))/(4^(j-1)-1);
         end
-        
+
         h = h/2;
 
         for j=1:i
@@ -65,16 +65,11 @@ function [v] = romberg(f, a, b, n)
 
 end
 
->> romberg(f, a, b, 5);
->> romberg(f, a, b, 5)
-ans =  0.74682
 >> format long
 >> romberg(f, a, b, 5)
 ans =  0.746824133095094
 >> romberg(f, a, b, 10)
 ans =  0.746824132812427
->> romberg(f, a, b, 5)
-ans =  0.746824133095094
 >> ans * 2 / sqrt(pi)
 ans =  0.842700793268671
 >> erf(1)
@@ -156,7 +151,7 @@ ans =   -1.66533453693773e-16
 composite_simpsons is the user-defined function defined from: /home/andrew/Documents/school/numerical-analysis/code/matlab/integration/composite_simpsons.m
 
 function [v] = composite_simpsons(f, a, b, n)
-    
+
     h = (b - a)/n;
     xi0 = f(a) + f(b);
     xi1 = 0;
@@ -177,11 +172,6 @@ end
 
 >> composite_simpsons(f, a, b, n)
 ans =  0.68270
->> ls
-adaptive_quadrature.m  composite_simpsons.m	diary	   diary_4.6  gaussian_quadrature.m  romberg.m
-closed_newton_cotes.m  composite_trapezoidal.m	diary_4.5  diary_old  open_newton_cotes.m
->> [x, c] = lgwt(4, 0, pi/4);
-error: 'lgwt' undefined near line 1 column 8
 >> [x, c] = gaussian_quadrature(4, 0, pi/4);
 >> c' * f(x)
 ans = .6470
@@ -191,8 +181,8 @@ ans = .6470
 >> h = b / 16;
 >> s = 0;
 >> for i=0:15
-[x, c] = gaussian_quadrature(5, a+i*h, b+(i+1)*h);
-s = s + c' * f(x);
+    [x, c] = gaussian_quadrature(5, a+i*h, b+(i+1)*h);
+    s = s + c' * f(x);
 end
 >> s
 s = 58.438
