@@ -1,5 +1,22 @@
-function [S] = natural_cubic_splines (x, y, p)
-    
+function [S] = natural_cubic_splines (x, y)
+
+    % Natural Cubic Splines for Interpolation
+    %
+    % Approximates f(p), given x and y for a given p using
+    %   natural cubic spline interpolants.
+    %
+    % Arguments:
+    %   x : x values given
+    %   y : f(x) values given
+    % Returns:
+    %   S : coefficients of splines
+
+    if nargout == 0
+        verbose = true;
+    else
+        verbose = false;
+    end
+
     n = length(x)-1;
     m = n - 1;
     A = y;
@@ -9,7 +26,7 @@ function [S] = natural_cubic_splines (x, y, p)
     for i=1:n
         h(i) = x(i+1)-x(i);
     end
-    
+
     for i=1:m
         alpha(i+1) = 3.0*(A(i+2)*h(i)-A(i+1)*(x(i+2)-x(i))+A(i)*h(i+1))/(h(i+1)*h(i));
     end
@@ -20,7 +37,7 @@ function [S] = natural_cubic_splines (x, y, p)
     l(1) = 1;
     mu(1) = 0;
     z(1) = 0;
-    
+
     for i=1:m
         l(i+1) = 2*(x(i+2)-x(i))-h(i)*mu(i);
         mu(i+1) = h(i+1)/l(i+1);
@@ -34,7 +51,7 @@ function [S] = natural_cubic_splines (x, y, p)
     C = zeros(1,n+1);
     D = zeros(1,n+1);
     C(end) = z(end);
-    
+
     for i = 0:m
         j = m-i;
         C(j+1) = z(j+1)-mu(j+1)*C(j+2);
@@ -43,4 +60,10 @@ function [S] = natural_cubic_splines (x, y, p)
     end
 
     S = [A; B; C; D]';
+
+    if verbose
+        fprintf('Splines:\n\n');
+        disp(S);
+    end
+
 end

@@ -1,5 +1,17 @@
 function [S] = clamped_cubic_splines (x, y, yp)
-    
+
+    % Clamped Cubic Splines for Interpolation
+    %
+    % Approximates f(p), given x and y for a given p using
+    %   clamped cubic spline interpolants.
+    %
+    % Arguments:
+    %   x : x values given
+    %   y : f(x) values given
+    %   yp : [f'(x(1)) f'(x(end))] boundary derivatives
+    % Returns:
+    %   S : coefficients of splines
+
     n = length(x)-1;
     m = n - 1;
     A = y;
@@ -8,7 +20,7 @@ function [S] = clamped_cubic_splines (x, y, yp)
     for i=1:n
         h(i) = x(i+1)-x(i);
     end
-    
+
     alpha = zeros(1, n+1);
     alpha(1) = 3.0*(A(2)-A(1))/h(1)-3.0*yp(1);
     alpha(end) = 3.0*yp(2)-3.0*(A(n+1)-A(n))/h(n);
@@ -23,7 +35,7 @@ function [S] = clamped_cubic_splines (x, y, yp)
     l(1) = 1;
     mu(1) = 0;
     z(1) = 0;
-    
+
     for i=1:m
         l(i+1) = 2*(x(i+2)-x(i))-h(i)*mu(i);
         mu(i+1) = h(i+1)/l(i+1);
@@ -37,7 +49,7 @@ function [S] = clamped_cubic_splines (x, y, yp)
     C = zeros(1,n+1);
     D = zeros(1,n+1);
     C(n+1) = z(n+1);
-    
+
     for i = 1:n
         j = n-i;
         C(j+1) = z(j+1)-mu(j+1)*C(j+2);
