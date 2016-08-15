@@ -1,4 +1,4 @@
-function [v] = adaptive_quadrature(f, a, b, tol, n)
+function [v] = adaptive_simpsons(f, a, b, tol, n)
 
     fa = f(a);
     fc = f((a+b)/2);

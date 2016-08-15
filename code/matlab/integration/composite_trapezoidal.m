@@ -6,7 +6,7 @@ function [v] = composite_trapezoidal(f, a, b, n)
 
     for i=1:n-1
         x = a+i*h;
-        xi = xi + f(x)
+        xi = xi + f(x);
     end
 
     v = h*(xi0 + 2*xi)/2;
