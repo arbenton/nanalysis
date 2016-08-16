@@ -1,4 +1,4 @@
-function [v] = adaptive_simpsons(f, a, b, tol, n)
+function [v] = adaptive_simpsons(f, a, b, tol)
 
     % Adaptive Simpsons Formula for Integration
     %
