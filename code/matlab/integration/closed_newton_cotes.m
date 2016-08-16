@@ -37,6 +37,8 @@ function [v] = closed_newton_cotes(f, a, b, n)
         % Fourth Order
         h = (b - a)/4;
         v = (2*h/45) * (7*f(a) + 32*f(a+h) + 12*f(a+2*h) + 32*f(a+3*h) + 7*f(b));
+    else
+        error('Only formulas of order 1 to 4 are available.')
     end
 
 end

@@ -2,10 +2,11 @@ function [p] = newton(f, fp, p, iterations)
 
     % Newton Algorithm for Finding Roots
     %
-    % Solves f(p) = 0, where f'(p) ~= 0
+    % Solves f(p) = 0, where f'(p) != 0
     %
-    % Error : |p_n - p| = - f(p_n) / f'(p_n)
-    % Notes : Converges quadratically given a sufficient first guess.
+    % Error : |e_n| = |f(p_n) / f'(p_n)|
+    % Notes : Converges quadratically given a sufficient first guess, and
+    %       that a root exists.
     %
     % Arguments:
     %   f : function

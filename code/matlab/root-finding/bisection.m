@@ -4,8 +4,9 @@ function [p] = bisection(f, a, b, iterations)
     %
     % Solves f(p) = 0, where a <= p <= b and f(a)*f(b) < 0
     %
-    % Error:  |p_n - p| <= (b - a) / (2^n)
-    % Notes: Will always converge, so long as f is continuous on [a, b]
+    % Error:  |e_n| = |b - a| / 2^n
+    % Notes: Will always converge, so long as f is continuous on [a, b] and
+    %       a zero exists in [a, b].
     %
     % Arguments:
     %     f : function

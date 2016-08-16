@@ -2,8 +2,10 @@ function [S] = natural_cubic_splines (x, y)
 
     % Natural Cubic Splines for Interpolation
     %
-    % Approximates f(p), given x and y for a given p using
-    %   natural cubic spline interpolants.
+    % Approximates f(x), given x and y using natural cubic spline interpolants.
+    %
+    % Error : max_{a<=x<=b}[|e|] <= C_0 h^4 max_{a<=x<=b}[|f^4(x)|]
+    % Notes : At the bounds the interpolating interval, S''(x) = 0.
     %
     % Arguments:
     %   x : x values given

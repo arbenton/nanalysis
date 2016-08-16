@@ -4,7 +4,8 @@ function [v] = composite_simpsons(f, a, b, n)
     %
     % Solves int_a^b f(x) dx across n panels.
     %
-    % Error : e <= h^5 / 90 sum_{j=1}^{n/2} f^(4)(xi)
+    % Error : e <= (b - a) / 180 h^4 f^(4) (xi)
+    % Notes : Error will be zero if f in C^4[a, b].
     %
     % Arguments:
     %   f : function

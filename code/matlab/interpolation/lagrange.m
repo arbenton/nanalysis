@@ -5,8 +5,9 @@ function [v] = lagrange(x, y, p)
     % Approximates f(p), given x and y for a given p using
     %   Lagrange interpolants L.
     %
-    % Error : |f(x) - P(x)| <= [f^{(n+1)}(xi(x))/(n+1)!] * prod_{i=1}^n (x-x_i)
-    % Notes : Prone to roundoff error
+    % Error : e_n <= [f^{(n+1)}(xi(x))/(n+1)!] * prod_{i=1}^n (x-x_i)
+    % Notes : f must be in C^{n+1}[a, b] and x_i must be unique. Very prone to
+    %       roundoff error.
     %
     % Arguments:
     %   x : x values given

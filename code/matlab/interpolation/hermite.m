@@ -5,8 +5,8 @@ function [v] = hermite(x, y, yp, p)
     % Approximates f(p), given x, y, and f'(x) for a given p using
     %   recursively constructed Hermite interpolants.
     %
-    % Error : |f(x) - P(x)| <= f^(K)(xi)/K! prod_{i=0}^n (x-x_i)^{k_i}
-    % Notes :
+    % Error : e_n <= f^(2n+2)(xi)/(2n+2)! prod_{i=0}^n (x-x_i)^2
+    % Notes : Hermite polynomials match on derivatives also.
     %
     % Arguments:
     %   x : x values given
@@ -44,7 +44,7 @@ function [v] = hermite(x, y, yp, p)
     end
 
     P = diag(Q);
-    
+
     v = P(1);
     for i=1:2*n-1
         v = v + P(i+1)*prod(p*ones(i,1)-z(1:i));

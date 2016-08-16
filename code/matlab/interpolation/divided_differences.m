@@ -5,8 +5,8 @@ function [v] = divided_differences(x, y, p)
     % Approximates f(p), given x and y for a given p using
     %   recursively constructed Newton interpolants.
     %
-    % Error : |f(x) - P(x)| <= f[x_0,...x_n] prod_{i=0}^n (x-x_i)
-    % Notes :
+    % Error : e_n <= f[x_0,...,x_n] prod_{i=0}^n (x-x_i)
+    % Notes : Allows points to be added to table without creating a new table.
     %
     % Arguments:
     %   x : x values given

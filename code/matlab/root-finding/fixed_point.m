@@ -4,7 +4,7 @@ function [p] = fixed_point(f, p, iterations)
     %
     % Solves f(p) = 0
     %
-    % Error : |p_n - p_{n-1}| = |f(p_n) - p_{n-1}|
+    % Error : |e_n| = L^n / (1 - L) |x_1 - x_0|
     % Notes : Converges so long as f is continuous and differentiable.
     %
     % Arguments:
@@ -29,5 +29,5 @@ function [p] = fixed_point(f, p, iterations)
             fprintf('Iteration %3.0d: p = %4.9f, f(p) = %4.9f \n', i, p, f(p));
         end
     end
-    
+
 end

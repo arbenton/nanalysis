@@ -4,8 +4,8 @@ function [v] = endpoint_diff(f, p, h, points)
     %
     % Approximates f'(p), given f and p.
     %
-    % Error : 3 Point : |f'(x) - f'(x)| <= h^2 / 3 f^(3) (xi)
-    %         5 Point : |f'(x) - f'(x)| <= h^4 / 5 f^(5) (xi)
+    % Error : 3 Point : |e| <= h^2 / 3 f^(3) (xi)
+    %         5 Point : |e| <= h^4 / 5 f^(5) (xi)
     % Notes : Prone to roundoff error, an optimal h != 0 exists
     %
     % Arguments:

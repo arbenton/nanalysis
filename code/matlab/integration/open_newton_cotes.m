@@ -37,6 +37,8 @@ function [v] = open_newton_cotes(f, a, b, n)
         % Third Order
         h = (b - a)/5;
         v = (5*h/24) * (11*f(a+h) + f(a+2*h) + f(a+3*h) + 11*f(a+4*h));
+    else
+        error('Only formulas of order 0 to 3 are available.')
     end
 
 end

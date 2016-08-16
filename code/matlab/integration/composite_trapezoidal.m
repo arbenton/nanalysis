@@ -5,6 +5,7 @@ function [v] = composite_trapezoidal(f, a, b, n)
     % Solves int_a^b f(x) dx across n panels.
     %
     % Error : e <= (b-a) * h^2 / 12 f^(2)(xi)
+    % Notes : Error will be zero if f in C^2[a, b].
     %
     % Arguments:
     %   f : function
